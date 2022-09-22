@@ -2,6 +2,7 @@ const path = require("path");
 const db = require("../database/models");
 const sequelize = db.sequelize;
 const { Op } = require("sequelize");
+const { title } = require("process");
 
 //Aqui tienen una forma de llamar a cada uno de los modelos
 // const {Movies,Genres,Actor} = require('../database/models');
@@ -50,11 +51,25 @@ const moviesController = {
       })
       .catch((error) => console.log(error));
   },
-  create: function (req, res) {},
-  edit: function (req, res) {},
-  update: function (req, res) {},
-  delete: function (req, res) {},
-  destroy: function (req, res) {},
+  create: function (req, res) {
+    const {title, rating, awards, release_date, length, genre_id} = req.body;
+    Movies.create({
+        title : title.trim(),
+        rating,
+        awards,
+        release_date,
+        genre_id
+    })
+        .then(movie => {
+        console.log(movie)
+        return res.redirect('/movies')
+    })
+        .catch(error => console.log(error))
+    },
+   /*  edit: function (req, res) {},
+    update: function (req, res) {},
+    delete: function (req, res) {},
+    destroy: function (req, res) {}, */
 };
 
 module.exports = moviesController;

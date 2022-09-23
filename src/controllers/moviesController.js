@@ -52,24 +52,37 @@ const moviesController = {
       .catch((error) => console.log(error));
   },
   create: function (req, res) {
-    const {title, rating, awards, release_date, length, genre_id} = req.body;
+    const { title, rating, awards, release_date, length, genre_id } = req.body;
     Movies.create({
-        title : title.trim(),
-        rating,
-        awards,
-        release_date,
-        genre_id
+      title: title.trim(),
+      rating,
+      awards,
+      length,
+      release_date,
+      genre_id,
     })
-        .then(movie => {
-        console.log(movie)
-        return res.redirect('/movies')
-    })
-        .catch(error => console.log(error))
-    },
-   /*  edit: function (req, res) {},
-    update: function (req, res) {},
-    delete: function (req, res) {},
-    destroy: function (req, res) {}, */
+      .then((movie) => {
+        console.log(movie);
+            return res.redirect("/movies");
+      })
+      .catch(error => console.log(error));
+  },
+  edit: function (req, res) {
+    let Movie = Movies.findByPk(req.params.id);
+    let allGenres = Genres.findAll({
+      order: ["name"],
+    });
+
+    Promise.all([Movie, allGenres])
+      .then(([Movie, allGenres]) => {
+        console.log(Movie);
+        console.log(allGenres);
+      })
+      .catch((error) => console.log(error));
+  },
+  update: function (req, res) {},
+  delete: function (req, res) {},
+  destroy: function (req, res) {},
 };
 
 module.exports = moviesController;

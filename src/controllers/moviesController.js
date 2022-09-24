@@ -1,5 +1,5 @@
 const path = require("path");
-const moment = require('moment');
+const moment = require("moment");
 const db = require("../database/models");
 const sequelize = db.sequelize;
 const { Op } = require("sequelize");
@@ -64,9 +64,9 @@ const moviesController = {
     })
       .then((movie) => {
         console.log(movie);
-            return res.redirect("/movies");
+        return res.redirect("/movies");
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   },
   edit: function (req, res) {
     let Movie = Movies.findByPk(req.params.id);
@@ -78,17 +78,35 @@ const moviesController = {
       .then(([Movie, allGenres]) => {
         /* console.log(Movie);
         console.log(allGenres); */
-        console.log(moment(Movie.release_date).format('YYYY MM DD'));
-        return res.render('moviesEdit', {
-            Movie,
-            allGenres,
-            moment :  moment
-        })
+        console.log(moment(Movie.release_date).format("YYYY MM DD"));
+        return res.render("moviesEdit", {
+          Movie,
+          allGenres,
+          moment: moment,
+        });
       })
       .catch((error) => console.log(error));
   },
   update: function (req, res) {
-    return res.send(req.body)
+    const { title, rating, awards, release_date, length, genre_id } = req.body;
+    /*     return res.send(req.body)
+     */
+    Movies.update(
+      {
+        title: title.trim(),
+        rating,
+        awards,
+        length,
+        release_date,
+        genre_id,
+      },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    ).then( () => res.redirect('/movies/detail/' + req.params.id))
+    .catch(error => console.log(error))
   },
   delete: function (req, res) {},
   destroy: function (req, res) {},

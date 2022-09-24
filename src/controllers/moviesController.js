@@ -1,4 +1,5 @@
 const path = require("path");
+const moment = require('moment');
 const db = require("../database/models");
 const sequelize = db.sequelize;
 const { Op } = require("sequelize");
@@ -75,12 +76,20 @@ const moviesController = {
 
     Promise.all([Movie, allGenres])
       .then(([Movie, allGenres]) => {
-        console.log(Movie);
-        console.log(allGenres);
+        /* console.log(Movie);
+        console.log(allGenres); */
+        console.log(moment(Movie.release_date).format('YYYY MM DD'));
+        return res.render('moviesEdit', {
+            Movie,
+            allGenres,
+            moment :  moment
+        })
       })
       .catch((error) => console.log(error));
   },
-  update: function (req, res) {},
+  update: function (req, res) {
+    return res.send(req.body)
+  },
   delete: function (req, res) {},
   destroy: function (req, res) {},
 };

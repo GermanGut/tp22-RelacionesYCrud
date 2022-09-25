@@ -108,8 +108,26 @@ const moviesController = {
     ).then( () => res.redirect('/movies/detail/' + req.params.id))
     .catch(error => console.log(error))
   },
-  delete: function (req, res) {},
-  destroy: function (req, res) {},
-};
+  delete: function (req, res) {
+    const Movie = req.query
+    res.render('moviesDelete', {Movie})
+    .then(()=> {
+        return  res.redirect('/movies')
+    })
+    .catch(error =>{
+     console.log(error);
+  })
+  },
+  destroy: function (req, res) {
+    const {id} = req.params
+    Movies.destroy({where:{id}})
+    .then(()=> {
+        return res.redirect('/movies')
+    })
+    .catch(error => {
+        console.log(error)
+    })
+  }
+}
 
 module.exports = moviesController;

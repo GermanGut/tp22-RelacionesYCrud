@@ -16,5 +16,16 @@
     <p>NAME: <%= genre.name %> </p>
     <p>RANKIG: <%= genre.ranking %> </p>
 
+    <% if (genre.movies.length) { %>
+        <ul>
+            <% genre.movies.forEach(movie => { %>
+                <li><%= movie.title %> </li>
+        </ul>
+         
+        <% }) %>
+    <% } else{%>
+    <p>El genero no tiene peliculas</p>
+    <% } %> 
+
 </body>
 </html>
